@@ -4,31 +4,40 @@ import memoize from 'lodash/memoize';
 export type TMatrix<T> = T[][];
 
 export const getNeighborsCoordinates = memoize(
-  (x: number, y: number, maxX: number, maxY: number): number[][] =>
-    [
-      [x - 1, y - 1],
-      [x - 1, y],
-      [x - 1, y + 1],
+  (x: number, y: number, maxX: number, maxY: number): number[][] => {
+    const xToTheLeft = x - 1;
+    const xToTheRight = x + 1;
+    const yBelow = y - 1;
+    const yAbove = y + 1;
 
-      [x, y - 1],
-      [x, y + 1],
+    return [
+      [xToTheLeft, yBelow],
+      [xToTheLeft, y],
+      [xToTheLeft, yAbove],
 
-      [x + 1, y - 1],
-      [x + 1, y],
-      [x + 1, y + 1]
-    ]
-      .filter(([x]) => 0 <= x && x <= maxX)
-      .filter(([_, y]) => 0 <= y && y <= maxY),
+      [x, yBelow],
+      [x, yAbove],
+
+      [xToTheRight, yBelow],
+      [xToTheRight, y],
+      [xToTheRight, yAbove]
+    ].filter(([x, y]) => 0 <= x && x <= maxX && 0 <= y && y <= maxY);
+  },
   (...args) => args.join()
 );
 
 export const Matrix = <T: any>(
   sizeX: number,
   sizeY: number,
-  getDefault: () => T
-): TMatrix<T> =>
-  Array.from({ length: sizeX }, () =>
-    Array(sizeY)
-      .fill(null)
-      .map(getDefault)
-  );
+  getValue: (x: number, y: number) => T
+): TMatrix<T> => {
+  const matrix = [];
+  for (let x = 0; x < sizeX; x++) {
+    matrix[x] = [];
+    for (let y = 0; y < sizeY; y++) {
+      matrix[x][y] = getValue(x, y);
+    }
+  }
+
+  return matrix;
+};

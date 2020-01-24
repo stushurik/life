@@ -24,35 +24,13 @@ const rules = {
   }
 };
 
-const defaultDeadCell = () => 0;
-
-export default (grid: TMatrix<TGridState>, sizeX: number, sizeY: number) => {
-  const newGrid = Matrix<TGridState>(sizeX, sizeY, defaultDeadCell);
-
-  for (let x = 0; x < sizeX; x++) {
-    for (let y = 0; y < sizeY; y++) {
-      const neighborStates = getNeighborsStates(
-        grid,
-        x,
-        y,
-        sizeX - 1,
-        sizeY - 1
-      );
-
-      newGrid[x][y] = computeNextState(grid[x][y], neighborStates);
-    }
-  }
-
-  return newGrid;
+export default (grid: TMatrix<TGridState>, X: number, Y: number) => {
+  const neighbors = getNeighborsStates.bind(null, grid, X - 1, Y - 1);
+  return Matrix<TGridState>(X, Y, (x, y) => next(grid[x][y], neighbors(x, y)));
 };
 
-const computeNextState = memoize(
-  (cellState, neighborsState) => {
-    return (
-      rules[cellState][
-        neighborsState.reduce((neighbors, state) => neighbors + state, 0)
-      ] || states.dead
-    );
-  },
+const next = memoize(
+  (cellState, neighborsState) =>
+    rules[cellState][neighborsState.filter(Boolean).length] || states.dead,
   (state, neighborsState) => state + neighborsState.join()
 );

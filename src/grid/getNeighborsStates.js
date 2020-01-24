@@ -5,9 +5,9 @@ import type { TGridState } from './model';
 
 export default (
   grid: TMatrix<TGridState>,
-  x: number,
-  y: number,
   maxX: number,
-  maxY: number
+  maxY: number,
+  x: number,
+  y: number
 ): TGridState[] =>
   getNeighborsCoordinates(x, y, maxX, maxY).map(([x, y]) => grid[x][y]);
