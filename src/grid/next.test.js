@@ -15,7 +15,7 @@ describe('next', () => {
   let neighbors;
 
   beforeEach(() => {
-    grid = Matrix(sizeX, sizeX);
+    grid = Matrix(sizeX, sizeX, () => 0);
 
     x = random(0, sizeX - 1);
     y = random(0, sizeY - 1);

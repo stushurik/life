@@ -24,8 +24,10 @@ const rules = {
   }
 };
 
+const defaultDeadCell = () => 0;
+
 export default (grid: TMatrix<TGridState>, sizeX: number, sizeY: number) => {
-  const newGrid = Matrix<TGridState>(sizeX, sizeY);
+  const newGrid = Matrix<TGridState>(sizeX, sizeY, defaultDeadCell);
 
   for (let x = 0; x < sizeX; x++) {
     for (let y = 0; y < sizeY; y++) {
@@ -40,6 +42,7 @@ export default (grid: TMatrix<TGridState>, sizeX: number, sizeY: number) => {
       newGrid[x][y] = computeNextState(grid[x][y], neighborStates);
     }
   }
+
   return newGrid;
 };
 

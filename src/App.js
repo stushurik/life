@@ -1,26 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Grid from './Grid';
+import GridBody from './GridBody';
 
-function App() {
+export default () => {
+  const [delay, setDelay] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={() => setDelay(1000)}>Start</button>
+      <Grid x={50} y={50} delay={delay}>
+        {grid => <GridBody grid={grid} />}
+      </Grid>
     </div>
   );
-}
-
-export default App;
+};

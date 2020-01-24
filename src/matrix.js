@@ -22,5 +22,13 @@ export const getNeighborsCoordinates = memoize(
   (...args) => args.join()
 );
 
-export const Matrix = <T>(sizeX: number, sizeY: number): TMatrix<T> =>
-  Array.from({ length: sizeX }, () => Array(sizeY).fill(0));
+export const Matrix = <T: any>(
+  sizeX: number,
+  sizeY: number,
+  getDefault: () => T
+): TMatrix<T> =>
+  Array.from({ length: sizeX }, () =>
+    Array(sizeY)
+      .fill(null)
+      .map(getDefault)
+  );
